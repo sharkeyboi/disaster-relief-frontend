@@ -4,7 +4,10 @@
     <FlexboxLayout flexDirection="column" >
         <Label text="Device Id"/>
         <Label :text="deviceData.device_info.device_id"/>
-
+        <Label text="Access Point SSID"/>
+        <Label :text="deviceData.device_info.ssid"/>
+        <Label text="Access Point Password"/>
+        <Label :text="deviceData.device_info.ap_password"/>
         <Label text="Sensor Data"/>
         <Button v-for="sensor in deviceData.sensors" v-bind:key="sensor.type" :text="sensor.type" @tap='viewSensor'/>
     </FlexboxLayout>
@@ -20,7 +23,9 @@ import Sensor from './Sensor'
       return {
           deviceData: {
               device_info: {
-                  "device_id" : ""
+                  "device_id" : "",
+                  "ap_password" : "",
+                  "ssid" : ""
               },
               sensors: []
           }

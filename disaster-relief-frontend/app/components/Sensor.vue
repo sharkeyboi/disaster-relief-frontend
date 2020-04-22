@@ -2,12 +2,17 @@
   <Page @loaded='getSensorData' class="page">
     <ActionBar :title="sensorName" class="action-bar" />
     <FlexboxLayout flexDirection="column" >
-        <Label v-if='sensorData[0]' :text='new Date(sensorData[0].timestamp).toDateString() + ": " + sensorData[0].value + " units"'/>
+        <Label v-if='sensorData[0]' :text='new Date(sensorData[0].timestamp).toDateString()'/>
+        <Label v-if='sensorData[0]' :text='new Date(sensorData[0].timestamp).toLocaleTimeString()'/>
+        <Label v-if='sensorData[0]' :text='sensorData[0].value + sensorSuffixes[sensorName]'/>
         <Label v-else text="No data"/>
         <RadCartesianChart v-if='sensorData' height="50%">
-            <DateTimeContinuousAxis v-tkCartesianHorizontalAxis plotMode='OnTicks' labelFitMode='Rotate'/>
-            <LinearAxis v-tkCartesianVerticalAxis/>
-            <LineSeries v-tkCartesianSeries :items="sensorData" categoryProperty="timestamp" valueProperty="value" />
+            <DateTimeContinuousAxis v-if='sensorName != "Water"' v-tkCartesianHorizontalAxis plotMode='OnTicks' labelFitMode='Rotate' majorStep="1"/>
+            <DateTimeContinuousAxis v-else v-tkCartesianHorizontalAxis plotMode='OnTicks' labelFitMode='Rotate'/>
+            <LinearAxis v-if=' sensorName=="Water"' v-tkCartesianVerticalAxis majorStep="1" maximum="1"/>
+            <LinearAxis v-else v-tkCartesianVerticalAxis />
+            <BarSeries v-if='sensorName=="Water"' v-tkCartesianSeries :items="sensorData" categoryProperty="timestamp" valueProperty="value" />
+            <LineSeries v-else v-tkCartesianSeries :items="sensorData" categoryProperty="timestamp" valueProperty="value" />
         </RadCartesianChart>
     </FlexboxLayout>
   </Page>
@@ -21,7 +26,12 @@ import { ObservableArray } from "tns-core-modules/data/observable-array"
     props: ['sensorName'],
     data() {
       return {
-          sensorData: []
+          sensorData: [],
+          sensorSuffixes: {
+              "Temperature": " °F",
+              "Microphone": " units",
+              "Water" : " water present"
+          }
       }
     },
     computed: {

@@ -2,6 +2,7 @@
   <Page class="page">
     <ActionBar title="Disaster Home Monitoring System" class="action-bar" />
     <FlexboxLayout flexDirection="column" >
+        <Image src="~/Logo.png" stretch="aspectFit" />
         <TextField v-model="email" hint="email" />
         <TextField v-model="password" hint="password" />
         <FlexboxLayout justifyContent='space-around' flexDirection="row">
